@@ -1,5 +1,14 @@
 #include <stdio.h>
 
+
+int show(char to[]) {
+
+}
+
 int main() {
-    printf("Welcome to jparse\n");
+
+    char* word1;
+    char word2[100];
+
+    printf("The value x is: %d\n",pp1->x);
 }
