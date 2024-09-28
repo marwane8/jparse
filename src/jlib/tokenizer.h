@@ -8,6 +8,7 @@ typedef struct {
     int quotes;
     int curly; 
     int colons;
+    char *tkn;
     strvec tokens;
 } tokenizer;
 

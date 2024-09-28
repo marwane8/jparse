@@ -9,7 +9,9 @@ BUILD_DIR = build
 # Files
 MAIN_SRC = $(SRC_DIR)/main.c
 JLIB_SRC = $(JLIB_DIR)/strvec.c
-OBJS = $(BUILD_DIR)/main.o $(BUILD_DIR)/strvec.o
+TKZR_SRC = $(JLIB_DIR)/tokenizer.c
+
+OBJS = $(BUILD_DIR)/main.o $(BUILD_DIR)/tokenizer.o $(BUILD_DIR)/strvec.o
 
 # Flags
 CFLAGS = -I $(JLIB_DIR)
@@ -27,6 +29,11 @@ $(TARGET): $(OBJS)
 # Rule to compile main.c
 $(BUILD_DIR)/main.o: $(MAIN_SRC) | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $(MAIN_SRC) -o $(BUILD_DIR)/main.o
+
+
+# Rule to compile tokenizer.c
+$(BUILD_DIR)/tokenizer.o: $(TKZR_SRC) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $(TKZR_SRC) -o $(BUILD_DIR)/tokenizer.o
 
 # Rule to compile strvec.c
 $(BUILD_DIR)/strvec.o: $(JLIB_SRC) | $(BUILD_DIR)
