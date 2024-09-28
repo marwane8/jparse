@@ -15,3 +15,4 @@ Resources:
 1. to build and run:
 `cd ./src`
 `make`
+`CMD + SHIFT + B`

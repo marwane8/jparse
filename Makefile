@@ -14,7 +14,7 @@ TKZR_SRC = $(JLIB_DIR)/tokenizer.c
 OBJS = $(BUILD_DIR)/main.o $(BUILD_DIR)/tokenizer.o $(BUILD_DIR)/strvec.o
 
 # Flags
-CFLAGS = -I $(JLIB_DIR)
+CFLAGS = -g -Wall -I $(JLIB_DIR)
 
 # Target executable
 TARGET = $(BUILD_DIR)/jparser

@@ -1,7 +1,7 @@
 {
     "files.associations": {
-        "*.css": "tailwindcss",
         "stdlib.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "tokenizer.h": "c"
     }
 }
