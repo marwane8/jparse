@@ -1,44 +1,54 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "tokenizer.h"
 #include "strvec.h"
 
-int tokenize(tokenizer *tkzr, int ch)
+#define MAXLEN 1000
+
+char *addchar(char *dest, char ch)
 {
-    if (ch == '{')
+    int len = (dest == NULL) ? 2 : strlen(dest) + 1;
+    dest = realloc(dest, len);
+    if (!dest)
     {
-        if (0 != tkzr->curly)
-        {
-            fprintf(stderr, "Out of bound character: { ");
-            return -1;
-        }
-
-        ++tkzr->curly;
-        // convert curly to string;
-        char str[2];
-        str[0] = ch;
-        svpush(&tkzr->tokens, str);
-        return 0;
+        perror("addchar allocation error: ");
+        exit(1);
     }
+    dest[len - 2] = ch;
+    dest[len - 1] = '\0';
+    return dest;
+}
 
-    if (ch == '}')
+int tokenize(tokenizer *tkzr, FILE *file)
+{
+    int c = 0;
+    while ((c = fgetc(file)) != EOF)
     {
-
-        if (1 != tkzr->curly)
+        char *token = NULL;
+        if (c == '{')
         {
-            fprintf(stderr, "Out of bound character: } ");
-            return -1;
+            if (0 != tkzr->curly)
+            {
+                fprintf(stderr, "Out of bound character: { ");
+                return -1;
+            }
+            ++tkzr->curly;
+            token = addchar(token, (char)c);
         }
-
-        --tkzr->curly;
-        // convert curly to string;
-        char str[2];
-        str[0] = ch;
-        svpush(&tkzr->tokens, str);
-        return 0;
+        else if (c == '}')
+        {
+            if (1 != tkzr->curly)
+            {
+                fprintf(stderr, "Out of bound character: } ");
+                return -1;
+            }
+            --tkzr->curly;
+            token = addchar(token, (char)c);
+        }
+        if (token)
+            svpush(&tkzr->tokens, token);
     }
-
-    printf("Current tokens: ");
     svprint(tkzr->tokens);
     return 0;
-
 }

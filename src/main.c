@@ -18,8 +18,10 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
         return 1;
     }
-    int c;
-    tokenizer tkzr = {0};
 
-    printf("It worked");
+    // application starting point
+    tokenizer tkzr = {0};
+    tokenize(&tkzr, file);
+
+
 }

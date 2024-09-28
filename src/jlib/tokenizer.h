@@ -13,7 +13,7 @@ typedef struct {
 } tokenizer;
 
 
-int tokenize(tokenizer *tkzr, int ch);
+int tokenize(tokenizer *tkzr, FILE *file);
 
 
 #endif // _TOKENIZER_H_
