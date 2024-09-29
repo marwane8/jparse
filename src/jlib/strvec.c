@@ -7,12 +7,12 @@
 
 void svprint(strvec vector)
 {
-    printf("|| cap: %d | len: %d | start: %p ||\n[ ", vector.capacity, vector.length, vector.list);
+    printf("|| cap: %d | len: %d | start: %p ||\n[", vector.capacity, vector.length, vector.list);
     for (size_t i = 0; i < vector.length; ++i)
     {
-        printf("\"%s\" - ", vector.list[i]);
+        printf("'%s', ", vector.list[i]);
     }
-    printf(" ]\n");
+    printf("]\n");
 }
 
 int svpush(strvec *vector, char *string)
@@ -27,7 +27,7 @@ int svpush(strvec *vector, char *string)
         {
             return -1;
         }
-        cap = MEMBLOCK;
+        cap=MEMBLOCK;
     }
     else if (cap == len)
     {
@@ -42,6 +42,7 @@ int svpush(strvec *vector, char *string)
     ++len;
     vector->capacity = cap;
     vector->length = len;
+
 
     return 0;
 }

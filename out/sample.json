@@ -1,5 +1,6 @@
 {
     "name" : "bobby",
     "country" : "afica",
-    "state" : "new haven"
+    "state" : "new haven",
+    "friends": ["mike", "mohammed","ahmed"]
 }
