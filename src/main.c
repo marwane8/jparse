@@ -4,8 +4,6 @@
 
 int main(int argc, char *argv[])
 {
-    int x = 1;
-    int y = 3;
     FILE *file;
 
     if (argc < 1)

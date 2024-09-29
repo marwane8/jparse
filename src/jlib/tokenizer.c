@@ -41,7 +41,6 @@ int tokenize(tokenizer *tkzr, FILE *file)
             int wch = fgetc(file); // start counting word characters
             while (wch != '"' && wch != EOF)
             {
-                char name = (char) wch;
                 token = addchar(token, (char) wch);
                 wch = fgetc(file);
             }
