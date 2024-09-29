@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "strvec.h"
 
+#define MEMBLOCK 1024
+
 void svprint(strvec vector)
 {
     printf("|| cap: %d | len: %d | start: %p ||\n[ ", vector.capacity, vector.length, vector.list);
@@ -20,11 +22,12 @@ int svpush(strvec *vector, char *string)
 
     if (cap == 0)
     {
-        vector->list = (char **)calloc(1, sizeof(char *));
-        if (!vector->list) {
+        vector->list = (char **)calloc(MEMBLOCK, sizeof(char *));
+        if (!vector->list)
+        {
             return -1;
         }
-        ++cap;
+        cap = MEMBLOCK;
     }
     else if (cap == len)
     {
@@ -32,10 +35,14 @@ int svpush(strvec *vector, char *string)
         vector->list = realloc(vector->list, cap);
     }
 
-    vector->list[len] = string;
+    char *sptr = (char *)calloc(1, strlen(string));
+    strncpy(sptr, string, strlen(string) + 1);
+    vector->list[len] = sptr;
+
     ++len;
     vector->capacity = cap;
     vector->length = len;
+
     return 0;
 }
 
