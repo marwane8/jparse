@@ -4,6 +4,8 @@
 
 int main(int argc, char *argv[])
 {
+    int x = 1;
+    int y = 3;
     FILE *file;
 
     if (argc < 1)
@@ -22,6 +24,6 @@ int main(int argc, char *argv[])
     // application starting point
     tokenizer tkzr = {0};
     tokenize(&tkzr, file);
-
+    fclose(file);
 
 }
