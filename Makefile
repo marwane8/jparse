@@ -10,8 +10,9 @@ BUILD_DIR = build
 MAIN_SRC = $(SRC_DIR)/main.c
 JLIB_SRC = $(JLIB_DIR)/strvec.c
 TKZR_SRC = $(JLIB_DIR)/tokenizer.c
+JDICT_SRC = $(JLIB_DIR)/jdict.c
 
-OBJS = $(BUILD_DIR)/main.o $(BUILD_DIR)/tokenizer.o $(BUILD_DIR)/strvec.o
+OBJS = $(BUILD_DIR)/main.o $(BUILD_DIR)/jdict.o $(BUILD_DIR)/tokenizer.o $(BUILD_DIR)/strvec.o
 
 # Flags
 CFLAGS = -g -Wall -I $(JLIB_DIR)
@@ -29,6 +30,10 @@ $(TARGET): $(OBJS)
 # Rule to compile main.c
 $(BUILD_DIR)/main.o: $(MAIN_SRC) | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $(MAIN_SRC) -o $(BUILD_DIR)/main.o
+
+# Rule to compile jdict.c
+$(BUILD_DIR)/jdict.o: $(JDICT_SRC) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $(JDICT_SRC) -o $(BUILD_DIR)/jdict.o
 
 
 # Rule to compile tokenizer.c
