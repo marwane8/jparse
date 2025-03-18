@@ -2,52 +2,54 @@
 CC = gcc
 
 # Directories
-SRC_DIR = src
-JLIB_DIR = $(SRC_DIR)/jlib
-BUILD_DIR = build
+SRC = src
+OBJ = obj
+BIN = bin
 
-# Files
-MAIN_SRC = $(SRC_DIR)/main.c
-JLIB_SRC = $(JLIB_DIR)/strvec.c
-TKZR_SRC = $(JLIB_DIR)/tokenizer.c
-JDICT_SRC = $(JLIB_DIR)/jdict.c
+OBJS = \
+	$(OBJ)/jdict.o \
+	$(OBJ)/tokenizer.o \
+	$(OBJ)/strvec.o
 
-OBJS = $(BUILD_DIR)/main.o $(BUILD_DIR)/jdict.o $(BUILD_DIR)/tokenizer.o $(BUILD_DIR)/strvec.o
-
-# Flags
-CFLAGS = -g -Wall -I $(JLIB_DIR)
+# Flags - include
+CFLAGS = -g -Wall -I $(OBJ)
 
 # Target executable
-TARGET = $(BUILD_DIR)/jparser
+TARGET = $(BIN)/jparser
 
-# Default rule to build the executable
-all: $(BUILD_DIR) $(TARGET)
+
+
+all: $(TARGET)
 
 # Rule to link object files and create the executable
-$(TARGET): $(OBJS)
-	$(CC) -o $(TARGET) $(OBJS)
+$(TARGET): $(OBJS) $(OBJ)/main.o
+	$(CC) -o $(TARGET) $(OBJS) $(OBJ)/main.o
 
-# Rule to compile main.c
-$(BUILD_DIR)/main.o: $(MAIN_SRC) | $(BUILD_DIR)
-	$(CC) $(CFLAGS) -c $(MAIN_SRC) -o $(BUILD_DIR)/main.o
-
-# Rule to compile jdict.c
-$(BUILD_DIR)/jdict.o: $(JDICT_SRC) | $(BUILD_DIR)
-	$(CC) $(CFLAGS) -c $(JDICT_SRC) -o $(BUILD_DIR)/jdict.o
+# Make all object files in obj directory
+$(OBJ)/%.o: $(SRC)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 
-# Rule to compile tokenizer.c
-$(BUILD_DIR)/tokenizer.o: $(TKZR_SRC) | $(BUILD_DIR)
-	$(CC) $(CFLAGS) -c $(TKZR_SRC) -o $(BUILD_DIR)/tokenizer.o
+# Build Tests
+TESTS = tests
+T_TARGET = $(TESTS)/bin/test_jparser
+T_FLAGS = -I $(TESTS)/$(OBJ) -I $(SRC)
 
-# Rule to compile strvec.c
-$(BUILD_DIR)/strvec.o: $(JLIB_SRC) | $(BUILD_DIR)
-	$(CC) $(CFLAGS) -c $(JLIB_SRC) -o $(BUILD_DIR)/strvec.o
+T_OBJS = \
+	$(TESTS)/$(OBJ)/jdict_test.o \
 
-# Create build directory if it doesn't exist
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+test: $(T_TARGET)
+
+# Directory checks
+$(T_TARGET): $(OBJ) $(T_OBJS)
+	$(CC) $(T_FLAGS) -o $(T_TARGET) $(T_OBJS) $(OBJS)
+
+$(TESTS)/$(OBJ)/%.o: $(TESTS)/%.c
+	$(CC) $(CFLAGS) $(T_FLAGS) -c $< -o $@
+
+
+
 
 # Clean rule to remove object files and the executable
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(OBJ)/* $(BIN)/* tests/bin/* tests/obj/*

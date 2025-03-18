@@ -16,3 +16,18 @@ Resources:
 `cd ./src`
 `make`
 `CMD + SHIFT + B`
+
+
+## Design Components
+
+#### Lexical Component
+example:
+```
+{ pair : ['x','y']} =>
+[ '{',pair',':', '[','x',',', 'y', ']','}']
+```
+- Should remove comments and white space
+- Should handle indefinite string length 
+- Returns an array of objects
+
+
