@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "tokenizer.h"
-#include "strvec.h"
+#include "svec.h"
 
 char *addchar(char *dest, char ch)
 {
@@ -65,8 +65,8 @@ int tokenize(tokenizer *tkzr, FILE *file)
         }
 
         if (token)
-            svpush(&tkzr->tokens, token);
+            svadd(&tkzr->tokens, token);
     }
-    svprint(tkzr->tokens);
+    svlog(tkzr->tokens);
     return 0;
 }

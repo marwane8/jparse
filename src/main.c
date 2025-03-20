@@ -7,11 +7,10 @@
 // test entry
 int main()
 {
+    jobj json = {};
 
-    jdict *json = jinit();
-    jput_int(json, "age", 34);
-    jput_float(json, "balance", 1024.32);
-    jprint(json);
+    jput_int(&json, "age", 34);
+    jput_float(&json, "balance", 1024.32);
 }
 
 // int main(int argc, char *argv[])

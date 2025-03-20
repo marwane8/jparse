@@ -9,7 +9,7 @@ BIN = bin
 OBJS = \
 	$(OBJ)/jdict.o \
 	$(OBJ)/tokenizer.o \
-	$(OBJ)/strvec.o
+	$(OBJ)/svec.o
 
 # Flags - include
 CFLAGS = -g -Wall -I $(OBJ)
@@ -36,7 +36,7 @@ T_TARGET = $(TESTS)/bin/test_jparser
 T_FLAGS = -I $(TESTS)/$(OBJ) -I $(SRC)
 
 T_OBJS = \
-	$(TESTS)/$(OBJ)/jdict_test.o \
+	$(TESTS)/$(OBJ)/svec_test.o \
 
 test: $(T_TARGET)
 

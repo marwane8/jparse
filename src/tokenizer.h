@@ -1,7 +1,7 @@
 #ifndef _TOKENIZER_H_
 #define _TOKENIZER_H_
 
-#include "strvec.h"
+#include "svec.h"
 
 
 typedef struct {
@@ -9,7 +9,7 @@ typedef struct {
     int curly; 
     int colons;
     char *tkn;
-    strvec tokens;
+    svec tokens;
 } tokenizer;
 
 

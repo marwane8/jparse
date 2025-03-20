@@ -1,8 +1,10 @@
 {
     "files.associations": {
+        "*.css": "tailwindcss",
         "stdlib.h": "c",
         "string.h": "c",
         "tokenizer.h": "c",
-        "strvec.h": "c"
+        "svec.h": "c",
+        "minunit.h": "c"
     }
 }

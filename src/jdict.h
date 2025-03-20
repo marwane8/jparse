@@ -2,7 +2,7 @@
 #define _JDICT_H_
 
 #define JBUFFER 5
-#define MAX_KEY_LENGTH 100
+#define JSON_KEY_MAX 100
 
 typedef enum jtype
 {
@@ -20,25 +20,16 @@ typedef union
     void *ptr_val;
 } jval;
 
-typedef struct jnode
+typedef struct jobj
 {
-    char key[100];
+    char key[JSON_KEY_MAX];
     jtype type;
     jval value;
-} jnode;
+} jobj;
 
-typedef struct
-{
-    jnode *nodes;
-    size_t len;
-    size_t size;
-} jdict;
-
-jdict *jinit();
-jdict *jput_int(jdict *dict, char *key, int number);
-jdict *jput_float(jdict *dict, char *key, float number);
-
-void jprint(jdict *dict);
+int jput_int(jobj *obj, char *key, int number);
+int jput_float(jobj *obj, char *key, float number);
+char *jsrlz(jobj *obj);
 
 // TODO
 // jval jget(jdict *dict, char *key);
