@@ -7,10 +7,7 @@
 // test entry
 int main()
 {
-    jobj json = {};
-
-    jput_int(&json, "age", 34);
-    jput_float(&json, "balance", 1024.32);
+    printf("Hello");
 }
 
 // int main(int argc, char *argv[])

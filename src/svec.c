@@ -28,7 +28,7 @@ char *svadd(svec *vec, char *string)
     if (vec->size <= new_length)
     {
 
-        int block_size = (new_length / VECSIZ) + 1;
+        int block_size = vec->size * vec->size;
         LOGINFO("strvec.c:svadd - reallocating...");
         vec->string = realloc(vec->string, sizeof(char) * block_size);
         if (vec->string == NULL)
@@ -54,6 +54,7 @@ char *svget(svec vec)
 
     return vec.string;
 }
+
 int svfree(svec *vec)
 {
     if (vec->size == 0)

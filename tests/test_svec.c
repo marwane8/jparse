@@ -1,11 +1,7 @@
-/* file minunit_example.c */
-
 #include <stdio.h>
 #include <string.h>
 #include "minunit.h"
 #include "svec.h"
-
-int tests_run = 0;
 
 static char *test_svec_add()
 {
@@ -26,31 +22,16 @@ static char *test_svec_add()
 
     svinit(&vec);
     string = svget(vec);
-    mu_assert("X vector not cleared", *string == 0);
+    mu_assert("X failed vector cleared", *string == 0);
 
     pass_msg("test_svec_add");
     return 0;
 }
 
 // INIT TESTS
-static char *all_tests()
+static char *svec_tests()
 {
+    printf("\n--- SVEC TESTS ---\n");
     mu_run_test(test_svec_add);
     return 0;
-}
-
-int main(int argc, char **argv)
-{
-    char *result = all_tests();
-    if (result != 0)
-    {
-        printf("%s\n", result);
-    }
-    else
-    {
-        printf("ALL TESTS PASSED\n");
-    }
-    printf("Tests run: %d\n", tests_run);
-
-    return result != 0;
 }

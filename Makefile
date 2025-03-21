@@ -36,13 +36,14 @@ T_TARGET = $(TESTS)/bin/test_jparser
 T_FLAGS = -I $(TESTS)/$(OBJ) -I $(SRC)
 
 T_OBJS = \
-	$(TESTS)/$(OBJ)/svec_test.o \
+	$(TESTS)/$(OBJ)/test_svec.o \
+	$(TESTS)/$(OBJ)/test_jdict.o \
 
 test: $(T_TARGET)
 
 # Directory checks
 $(T_TARGET): $(OBJ) $(T_OBJS)
-	$(CC) $(T_FLAGS) -o $(T_TARGET) $(T_OBJS) $(OBJS)
+	$(CC) $(T_FLAGS) -o $(T_TARGET) $(T_OBJS) $(OBJS) $(TESTS)/test.c
 
 $(TESTS)/$(OBJ)/%.o: $(TESTS)/%.c
 	$(CC) $(CFLAGS) $(T_FLAGS) -c $< -o $@

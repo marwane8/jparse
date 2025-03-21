@@ -10,6 +10,42 @@ typedef struct
     int value;
 } s2i_map;
 
+s2i_map *table[TABLE_SIZE];
+
+unsigned int hash(char *key);
+
+s2i_map *init_hash_map();
+int s2i_insert(s2i_map *node);
+void s2i_print();
+
+int main()
+{
+    s2i_map *table = init_hash_map();
+    s2i_map pair = {.key = "bob", .value = 123};
+    s2i_map pair1 = {.key = "mohammed", .value = 43};
+    s2i_map pair2 = {.key = "adrian", .value = 10};
+    s2i_map pair3 = {.key = "hommer", .value = 2121};
+
+    s2i_print();
+
+    s2i_insert(&pair);
+    s2i_insert(&pair1);
+    s2i_insert(&pair2);
+    s2i_insert(&pair3);
+
+    s2i_print();
+}
+
+s2i_map *init_hash_map()
+{
+
+    for (size_t i = 0; i < TABLE_SIZE; i++)
+    {
+        table[i] = NULL;
+    }
+    return table;
+}
+
 unsigned int hash(char *key)
 {
 
@@ -23,42 +59,31 @@ unsigned int hash(char *key)
     return hash_value * 7 % TABLE_SIZE;
 }
 
-s2i_map *init_hash_map()
-{
-
-    s2i_map hash_map[TABLE_SIZE];
-    for (size_t i = 0; i < TABLE_SIZE; i++)
-    {
-        hash_map[i] = NULL;
-    }
-    return hash_map;
-}
-
-int s2i_insert(s2i_map hash_map[TABLE_SIZE], s2i_map *node)
-
+int s2i_insert(s2i_map *node)
 {
     if (node == NULL)
         return 1;
+
     int i = hash(node->key);
     printf("key %s : %i\n", node->key, i);
-    if (hash_map[i] != NULL)
+    if (table[i] != NULL)
     {
         return 1;
     }
 
-    hash_map[i] = node;
+    table[i] = &node;
     return 0;
 }
 
-void print_hash()
+void s2i_print()
 {
 
     printf("== START ==\n");
     for (int i = 0; i < TABLE_SIZE; i++)
     {
-        if (hash_map[i] != NULL)
+        if (table[i] != NULL)
         {
-            printf(" %i\t%s\n", i, hash_map[i]->key);
+            printf(" %i\t%s\n", i, table[i]->key);
         }
         else
         {
@@ -66,22 +91,4 @@ void print_hash()
         }
     }
     printf("== END ==\n");
-}
-
-int main()
-{
-
-    s2i_map *table = init_hash_map();
-    s2i_map pair = {.key = "bob", .value = 123};
-    s2i_map pair1 = {.key = "mohammed", .value = 43};
-    s2i_map pair2 = {.key = "adrian", .value = 10};
-    s2i_map pair3 = {.key = "hommer", .value = 2121};
-
-    print_hash();
-
-    s2i_insert(table, &pair);
-    s2i_insert(table, &pair1);
-    s2i_insert(table, &pair2);
-    s2i_insert(table, &pair3);
-    print_hash();
 }
