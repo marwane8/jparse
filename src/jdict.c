@@ -25,7 +25,6 @@ int json_add(json *jj, jnode node)
     {
 
         int block_size = jj->size * jj->size;
-        LOGINFO("json - reallocating...");
         jj->arr = realloc(jj->arr, sizeof(jnode) * block_size);
         if (jj->arr == NULL)
         {
@@ -88,14 +87,13 @@ int jput_int(json *jj, char *key, int number)
 
     if (jj->arr == NULL)
     {
-        printf("Error: null obj\n");
+        LOGERROR("null obj\n");
         return 1;
     }
 
     if (strlen(key) >= JSON_KEY_MAX)
     {
-
-        printf("Error: key length\n");
+        LOGERROR("exceeded key length limit\n");
         return 1;
     }
 
@@ -118,14 +116,14 @@ int jput_float(json *jj, char *key, float number)
 
     if (jj->arr == NULL)
     {
-        printf("Error: null obj\n");
+        LOGERROR("null obj\n");
         return 1;
     }
 
     if (strlen(key) >= JSON_KEY_MAX)
     {
 
-        printf("Error: key length\n");
+        LOGERROR("exceeded key length limit\n");
         return 1;
     }
 

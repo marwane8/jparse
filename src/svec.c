@@ -29,7 +29,6 @@ char *svadd(svec *vec, char *string)
     {
 
         int block_size = vec->size * vec->size;
-        LOGINFO("strvec.c:svadd - reallocating...");
         vec->string = realloc(vec->string, sizeof(char) * block_size);
         if (vec->string == NULL)
         {
@@ -69,8 +68,6 @@ int svfree(svec *vec)
 
 void svlog(svec vec)
 {
-    printf("innnher");
-
     if (vec.string == NULL)
     {
         LOGERROR("vec is not initialized.");
