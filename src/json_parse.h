@@ -2,7 +2,7 @@
 #define _JSON_PARSE_
 
 #include "str_vector.h"
-#include "macros.h"
+#include "util.h"
 
 typedef enum _json_token_type_
 {
@@ -24,20 +24,20 @@ typedef enum _json_token_type_
 typedef struct _json_token_
 {
     json_token_type type;
-    svec value;
+    str_vec value;
 } json_token;
 
 typedef struct _json_node_
 {
-    svec key;
-    svec value;
+    str_vec key;
+    str_vec value;
     struct _json_node_ *json_child; // nested json
     struct _json_node_ *json_next;  // next json
 } json_node;
 
 typedef struct _json_parser_
 {
-    svec buffer;
+    str_vec buffer;
     u64 index;
     u64 size;
     u8 error_code;

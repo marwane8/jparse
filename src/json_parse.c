@@ -29,10 +29,7 @@ char parse_next(json_parser *parser)
 {
     if (parser->error_code != 0)
     {
-
-        char msg[32];
-        sprintf(msg, "parse error: index (%llu)", parser->index);
-        LOGERROR(msg);
+        LOGERROR("parse error: index (%llu)", parser->index);
         exit(1);
     }
     if (parser->index < parser->size)
@@ -189,7 +186,7 @@ void parse_json_object(json_parser *parser, json_node *node)
     parse_json_node(parser, node, tkn_next, json_object);
 }
 
-json_node *parse_json(svec buffer)
+json_node *parse_json(str_vec buffer)
 {
     json_parser parser = {
         .buffer = buffer,

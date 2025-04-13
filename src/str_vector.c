@@ -2,18 +2,18 @@
 #include <string.h>
 #include <stdlib.h>
 #include "str_vector.h"
-#include "macros.h"
+#include "util.h"
 
 #define VECSIZ 64
 
-int strv_init(svec *vec)
+int strv_init(str_vec *vec)
 {
     vec->string = calloc(VECSIZ, sizeof(char));
     vec->size = VECSIZ;
     return 0;
 }
 
-char *strv_add(svec *vec, char *string)
+char *strv_add(str_vec *vec, char *string)
 {
 
     if (vec->string == NULL)
@@ -44,7 +44,7 @@ char *strv_add(svec *vec, char *string)
     return vec->string;
 }
 
-char *strv_addc(svec *vec, char ch)
+char *strv_addc(str_vec *vec, char ch)
 {
 
     if (vec->string == NULL)
@@ -74,7 +74,7 @@ char *strv_addc(svec *vec, char ch)
     return vec->string;
 }
 
-char *strv_get(svec vec)
+char *strv_get(str_vec vec)
 {
     if (vec.string == NULL)
     {
@@ -85,7 +85,7 @@ char *strv_get(svec vec)
     return vec.string;
 }
 
-int strv_free(svec *vec)
+int strv_free(str_vec *vec)
 {
     if (vec->size == 0)
     {
@@ -97,7 +97,7 @@ int strv_free(svec *vec)
     return 0;
 }
 
-void strv_log(svec vec)
+void strv_log(str_vec vec)
 {
     if (vec.string == NULL)
     {

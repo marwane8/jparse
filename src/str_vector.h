@@ -1,18 +1,18 @@
-#ifndef _SVEC_H_
-#define _SVEC_H_
+#ifndef _STR_VEC_H_
+#define _STR_VEC_H_
 
 typedef struct
 {
     char *string;
     int size;
-} svec;
+} str_vec;
 
-int strv_init(svec *vec);
-char *strv_add(svec *vec, char *string);
-char *strv_addc(svec *vec, char ch);
-char *strv_get(svec vec);
-char strvi(svec vec, int i); // character at index ;
-int strv_free(svec *vec);
-void strv_log(svec vec);
+int strv_init(str_vec *vec);
+char *strv_add(str_vec *vec, char *string);
+char *strv_addc(str_vec *vec, char ch);
+char *strv_get(str_vec vec);
+char strvi(str_vec vec, int i); // character at index ;
+int strv_free(str_vec *vec);
+void strv_log(str_vec vec);
 
-#endif // _SVEC_H_
+#endif // _STR_VEC_H_

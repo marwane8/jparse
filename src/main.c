@@ -9,7 +9,7 @@
 // test entry
 int main()
 {
-    printf("Hello");
+    printf("Hello!");
 }
 
 // int main(int argc, char *argv[])

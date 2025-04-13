@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 #include "minunit.h"
-#include "svec.h"
+#include "str_vector.h"
 
-static char *test_svec_add()
+static char *test_str_vec_add()
 {
-    svec vec;
+    str_vec vec;
     strv_init(&vec);
     char *string = strv_get(vec);
     mu_assert("X vector not initalized", *string == 0);
@@ -24,14 +24,14 @@ static char *test_svec_add()
     string = strv_get(vec);
     mu_assert("X failed vector cleared", *string == 0);
 
-    pass_msg("test_svec_add");
+    pass_msg("test_str_vec_add");
     return 0;
 }
 
 // INIT TESTS
-static char *svec_tests()
+static char *str_vec_tests()
 {
-    printf("\n--- SVEC TESTS ---\n");
-    mu_run_test(test_svec_add);
+    printf("\n--- str_vec TESTS ---\n");
+    mu_run_test(test_str_vec_add);
     return 0;
 }

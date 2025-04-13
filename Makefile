@@ -14,7 +14,7 @@ OBJS = \
 CFLAGS = -g -Wall -I $(OBJ)
 
 # Target executable
-TARGET = $(BIN)/jparser
+TARGET = $(BIN)/jparse
 
 all: $(TARGET)
 
@@ -33,8 +33,8 @@ T_TARGET = $(TESTS)/bin/test_jparser
 T_FLAGS = -I $(TESTS)/$(OBJ) -I $(SRC)
 
 T_OBJS = \
-	$(TESTS)/$(OBJ)/test_svec.o \
-	$(TESTS)/$(OBJ)/test_jdict.o \
+	$(TESTS)/$(OBJ)/test_str_vector.o \
+	$(TESTS)/$(OBJ)/test_json_parse.o \
 
 test: $(T_TARGET)
 
