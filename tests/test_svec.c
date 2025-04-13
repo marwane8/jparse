@@ -6,22 +6,22 @@
 static char *test_svec_add()
 {
     svec vec;
-    svinit(&vec);
-    char *string = svget(vec);
+    strv_init(&vec);
+    char *string = strv_get(vec);
     mu_assert("X vector not initalized", *string == 0);
 
-    svadd(&vec, "Hello world");
-    string = svget(vec);
+    strv_add(&vec, "Hello world");
+    string = strv_get(vec);
     int res1 = strcmp(string, "Hello world");
     mu_assert("X failed init append", res1 == 0);
 
-    svadd(&vec, " I'm Working!");
-    string = svget(vec);
+    strv_add(&vec, " I'm Working!");
+    string = strv_get(vec);
     int res2 = strcmp(string, "Hello world I'm Working!");
     mu_assert("X failed second append", res2 == 0);
 
-    svinit(&vec);
-    string = svget(vec);
+    strv_init(&vec);
+    string = strv_get(vec);
     mu_assert("X failed vector cleared", *string == 0);
 
     pass_msg("test_svec_add");

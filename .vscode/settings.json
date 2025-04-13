@@ -5,6 +5,7 @@
         "string.h": "c",
         "tokenizer.h": "c",
         "svec.h": "c",
-        "minunit.h": "c"
+        "minunit.h": "c",
+        "json_parse.h": "c"
     }
 }

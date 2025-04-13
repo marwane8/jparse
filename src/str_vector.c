@@ -1,18 +1,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "svec.h"
+#include "str_vector.h"
 #include "macros.h"
 
 #define VECSIZ 64
 
-void svinit(svec *vec)
+int strv_init(svec *vec)
 {
     vec->string = calloc(VECSIZ, sizeof(char));
     vec->size = VECSIZ;
+    return 0;
 }
 
-char *svadd(svec *vec, char *string)
+char *strv_add(svec *vec, char *string)
 {
 
     if (vec->string == NULL)
@@ -32,7 +33,7 @@ char *svadd(svec *vec, char *string)
         vec->string = realloc(vec->string, sizeof(char) * block_size);
         if (vec->string == NULL)
         {
-            LOGERROR("strvec.c:svadd - unable to realloc");
+            LOGERROR("strvec.c:strv_add - unable to realloc");
             return "";
         }
 
@@ -43,7 +44,37 @@ char *svadd(svec *vec, char *string)
     return vec->string;
 }
 
-char *svget(svec vec)
+char *strv_addc(svec *vec, char ch)
+{
+
+    if (vec->string == NULL)
+    {
+        LOGERROR("vec is not initialized.");
+        return NULL;
+    }
+
+    int len = strlen(vec->string);
+    if (vec->size <= len + 1)
+    {
+
+        int block_size = vec->size * vec->size;
+        vec->string = realloc(vec->string, sizeof(char) * block_size);
+        if (vec->string == NULL)
+        {
+            LOGERROR("strvec.c:strv_add - unable to realloc");
+            return "";
+        }
+
+        vec->size = block_size;
+    }
+
+    vec->string[len] = ch;
+    vec->string[len + 1] = '\0';
+
+    return vec->string;
+}
+
+char *strv_get(svec vec)
 {
     if (vec.string == NULL)
     {
@@ -54,7 +85,7 @@ char *svget(svec vec)
     return vec.string;
 }
 
-int svfree(svec *vec)
+int strv_free(svec *vec)
 {
     if (vec->size == 0)
     {
@@ -66,7 +97,7 @@ int svfree(svec *vec)
     return 0;
 }
 
-void svlog(svec vec)
+void strv_log(svec vec)
 {
     if (vec.string == NULL)
     {

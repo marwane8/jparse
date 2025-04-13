@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "tokenizer.h"
-#include "jdict.h"
+
+#include "str_vector.h"
+#include "json_parse.h"
+
 
 // test entry
 int main()

@@ -8,7 +8,7 @@ Parse will be broken down into 3 steps:
 Resources:
 
 [Writing a simple json parser](https://notes.eatonphil.com/writing-a-simple-json-parser.html)
-
+[Json Parser](https://www.computerenhance.com/p/initial-haversine-processor-code) - 15:00
 
 
 ## Run Instructions
@@ -17,6 +17,8 @@ Resources:
 `make`
 `CMD + SHIFT + B`
 
+## Debug mode
+gcc -fdiagnostics-color=always -g -o parse json_parse.c svec.c
 
 ## Design Components
 

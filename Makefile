@@ -7,17 +7,14 @@ OBJ = obj
 BIN = bin
 
 OBJS = \
-	$(OBJ)/jdict.o \
-	$(OBJ)/tokenizer.o \
-	$(OBJ)/svec.o
+	$(OBJ)/json_parse.o \
+	$(OBJ)/str_vector.o
 
 # Flags - include
 CFLAGS = -g -Wall -I $(OBJ)
 
 # Target executable
 TARGET = $(BIN)/jparser
-
-
 
 all: $(TARGET)
 
