@@ -7,6 +7,9 @@
 #define LOGINFO(fmt, ...)  printf("[INFO] " fmt "\n", ##__VA_ARGS__)
 #define LOGERROR(fmt, ...) printf("[ERROR] " fmt "\n", ##__VA_ARGS__)
 
+#define true 1
+#define false 0
+
 typedef uint8_t u8;     // 0 - 255
 typedef uint16_t u16;   // 0 - 65,535
 typedef uint32_t u32;   // 0 - 4,294,967,295

@@ -1,8 +1,8 @@
 #ifndef _JSON_PARSE_
 #define _JSON_PARSE_
 
-#include "str_vector.h"
 #include "util.h"
+#include "str_vector.h"
 
 typedef enum _json_token_type_
 {
@@ -21,6 +21,16 @@ typedef enum _json_token_type_
     tkn_close_brace = '}'
 } json_token_type;
 
+// check which structure is being parsed
+typedef enum _json_structure_
+{
+    none,
+    json_object,
+    json_list,
+    json_value,
+    json_string,
+} json_struct;
+
 typedef struct _json_token_
 {
     json_token_type type;
@@ -29,6 +39,7 @@ typedef struct _json_token_
 
 typedef struct _json_node_
 {
+    json_struct struct_type;
     str_vec key;
     str_vec value;
     struct _json_node_ *json_child; // nested json
@@ -42,5 +53,11 @@ typedef struct _json_parser_
     u64 size;
     u8 error_code;
 } json_parser;
+
+json_node *parse_json(str_vec buffer);
+void log_json(json_node *n, u16 depth);
+
+// test functions
+void tokenize_full_json(str_vec buffer);
 
 #endif // _JSON_PARSE_

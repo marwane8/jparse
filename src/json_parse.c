@@ -18,6 +18,8 @@ void init_json_token(json_token *token)
 u8 is_space(char c)
 {
     return ((c == ' ') || (c == '\t') || (c == '\n') || (c == '\r'));
+
+    return strchr(" \t\n\r", c) > 0;
 }
 
 u8 is_delimeter(char c)
@@ -54,6 +56,7 @@ json_token get_next_token(json_parser *parser)
     if (parser->index >= parser->size)
     {
         tkn.type = tkn_eof;
+        parser->error_code = -1;
         return tkn;
     }
 
@@ -85,12 +88,7 @@ json_token get_next_token(json_parser *parser)
             {
                 strv_addc(&tkn.value, c);
             }
-            if (!is_space(c) || c != ',')
-            {
-                tkn.type = tkn_error;
-                parser->error_code = -1;
-                return tkn;
-            }
+
             parser->index--;
             return tkn;
         }
@@ -100,48 +98,23 @@ json_token get_next_token(json_parser *parser)
     return tkn;
 }
 
-// check which structure is being parsed
-typedef enum _json_structure_
+json_node *parse_json_list(json_parser *parser, json_token start_tkn, json_token_type end_type, u8 add_label);
+json_node *parse_json_node(json_parser *parser, str_vec key_value, json_token token)
 {
-    none,
-    json_object,
-    json_list
-} json_struct;
 
-void parse_json_object(json_parser *parser, json_node *node);
-json_node *parse_json_node(json_parser *parser, json_node *node, json_token token, json_struct curr_struct)
-{
-    if (parser->error_code != 0)
+    u8 valid = true;
+
+    json_node *child_node = NULL;
+
+    if (token.type == tkn_open_bracket)
     {
-        return NULL;
+        child_node = parse_json_list(parser, token, tkn_close_bracket, false);
+    }
+    else if (token.type == tkn_open_brace)
+    {
+        child_node = parse_json_list(parser, token, tkn_close_brace, true);
     }
 
-    if (curr_struct == json_object && token.type == tkn_close_brace)
-        return node;
-
-    if (curr_struct == json_list && token.type == tkn_close_bracket)
-        return node;
-
-    if (token.type == tkn_open_brace)
-    {
-
-        json_node *obj_node = calloc(1, sizeof(json_node));
-        parse_json_object(parser, obj_node);
-        if (node == NULL) // this is the root node
-        {
-            return obj_node;
-        }
-        node->json_child = obj_node;
-    }
-    else if (token.type == tkn_open_bracket)
-    {
-        json_node *list_node = calloc(1, sizeof(json_node));
-        if (node == NULL) // this is the root node
-        {
-            return list_node;
-        }
-        node->json_child = list_node;
-    }
     else if (
         token.type == tkn_string ||
         token.type == tkn_number ||
@@ -149,41 +122,95 @@ json_node *parse_json_node(json_parser *parser, json_node *node, json_token toke
         token.type == tkn_false ||
         token.type == tkn_null)
     {
-        node->value = token.value;
-        json_token next_tkn = get_next_token(parser);
-        parse_json_node(parser, node, next_tkn, curr_struct);
+        // set data at end;
     }
-    else if (token.type == tkn_comma)
+    else
     {
-        json_token next_tkn = get_next_token(parser);
-        json_node *next_node = calloc(1, sizeof(json_node));
-        parse_json_node(parser, next_node, next_tkn, curr_struct);
-        node->json_child = next_node;
+        valid = false;
     }
-
+    json_node *node = NULL;
+    if (valid)
+    {
+        node = (json_node *)malloc(sizeof(json_node));
+        node->key = key_value;
+        node->value = token.value;
+        node->json_child = child_node;
+        node->json_next = NULL;
+    }
     return node;
 }
 
-void parse_json_object(json_parser *parser, json_node *node)
+json_node *parse_json_list(json_parser *parser, json_token start_tkn, json_token_type end_type, u8 has_key)
 {
-    json_token tkn_start, tkn_mid, tkn_next;
 
-    tkn_start = get_next_token(parser);
-    tkn_mid = get_next_token(parser);
+    json_node *first_node = NULL;
+    json_node *last_node = NULL;
 
-    if (
-        tkn_start.type != tkn_string ||
-        tkn_mid.type != tkn_colon)
+    while (parser->error_code == 0)
     {
-        LOGERROR("invalid object token sequence");
-        node = NULL;
-        parser->error_code = -1;
-        return;
-    }
+        str_vec key_value = {};
+        json_token value = get_next_token(parser);
+        if (has_key)
+        {
+            if (value.type == tkn_string)
+            {
+                strv_init(&key_value);
+                key_value = value.value;
+                json_token colon = get_next_token(parser);
 
-    node->key = tkn_start.value;
-    tkn_next = get_next_token(parser);
-    parse_json_node(parser, node, tkn_next, json_object);
+                if (colon.type == tkn_colon)
+                {
+                    value = get_next_token(parser);
+                }
+                else
+                {
+                    LOGERROR("parsing error: expected colon token - '%s'", strv_get(colon.value));
+                    parser->error_code = -1;
+                }
+            }
+            else if (value.type != end_type)
+            {
+                LOGERROR("parsing error: unexpected toke in json - '%s'", strv_get(value.value));
+                parser->error_code = -1;
+            }
+        }
+
+        json_node *node = parse_json_node(parser, key_value, value);
+        if (node)
+        {
+            if (first_node == NULL)
+            {
+                first_node = last_node = node;
+            }
+            else
+            {
+                last_node->json_next = node;
+                last_node = node;
+            }
+        }
+        else if (value.type == end_type)
+        {
+            break;
+        }
+        else
+        {
+            LOGERROR("parsing error: unexpected toke in json - '%s'", strv_get(value.value));
+            parser->error_code = -1;
+        }
+
+        json_token comma = get_next_token(parser);
+        if (comma.type == end_type)
+        {
+            break;
+        }
+
+        else if (comma.type != tkn_comma)
+        {
+            LOGERROR("parsing error: unexpected toke in json - '%s'", strv_get(value.value));
+            parser->error_code = -1;
+        }
+    }
+    return first_node;
 }
 
 json_node *parse_json(str_vec buffer)
@@ -194,44 +221,48 @@ json_node *parse_json(str_vec buffer)
         .index = 0,
         .error_code = 0};
 
-    json_token init_tkn = get_next_token(&parser);
-    json_node *node = parse_json_node(&parser, NULL, init_tkn, none);
-    return node;
+    str_vec init_key = {};
+    json_node *root = parse_json_node(&parser, init_key, get_next_token(&parser));
+    return root;
 }
 
-void log_json_node(json_node *n, u16 depth)
+void log_json(json_node *n, u16 depth)
 {
     char tabs[depth];
     for (int i = 0; i < depth; i++)
     {
         tabs[i] = ' ';
     }
-    if (n == NULL)
-    {
-        printf("%s--\n", tabs);
-        return;
-    }
-
-    printf("%skey: %s, val: %s\n", tabs, n->key.string, n->value.string);
+    printf("%s(%s : %s)\n", tabs, n->key.string, n->value.string);
     if (n->json_child != NULL)
     {
-        printf("%s{", tabs);
-        log_json_node(n->json_child, ++depth);
-        printf("%s}", tabs);
+        log_json(n->json_child, ++depth);
     }
-    if (n->json_next != NULL)
+
+    json_node *next = n;
+    while ((next = next->json_next) != NULL)
     {
-        printf("%s[", tabs);
-        log_json_node(n->json_next, depth);
-        printf("%s]", tabs);
+        printf("%s(%s : %s)\n", tabs, next->key.string, next->value.string);
+        if (next->json_child != NULL)
+        {
+            log_json(next->json_child, ++depth);
+        }
     }
 }
 
-json_node try_parse(json_parser *prs)
+void tokenize_full_json(str_vec buffer)
 {
-    json_node nd;
-    json_token tkn = get_next_token(prs);
-    nd.key = tkn.value;
-    nd.value = tkn.value;
-    return nd;
+
+    json_parser parser = {
+        .buffer = buffer,
+        .size = buffer.size,
+        .index = 0,
+        .error_code = 0};
+
+    json_token token;
+    while ((token = get_next_token(&parser)).type > 0)
+    {
+        char *value = strv_get(token.value);
+        printf("(%s) ", value);
+    }
 }

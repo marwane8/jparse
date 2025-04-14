@@ -2,52 +2,47 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "util.h"
 #include "str_vector.h"
 #include "json_parse.h"
 
-
-// test entry
-int main()
+int read_to_buffer(FILE *fp, str_vec *buffer)
 {
-    printf("Hello!");
+    char c;
+    while ((c = getc(fp)) != EOF)
+    {
+        strv_addc(buffer, c);
+    }
+    return 0;
 }
 
-// int main(int argc, char *argv[])
-// {
+int main(int argc, char *argv[])
+{
 
-//     FILE *file;
+    FILE *file;
+    str_vec buffer;
+    strv_init(&buffer);
 
-//     if (argc < 1)
-//     {
-//         printf("No input file provided");
-//     }
+    if (argc <= 1)
+    {
+        printf("\tUsage: jparse <file.json>\n");
+        return 0;
+    }
 
-//     file = fopen(argv[1], "r");
-//     if (file == NULL)
-//     {
-//         perror("main.c file error");
-//         exit(EXIT_FAILURE);
-//         return 1;
-//     }
+    char *filename = argv[1];
+    file = fopen(filename, "r");
+    if (file == NULL)
+    {
+        LOGERROR("file not found: %s", filename);
+        exit(EXIT_FAILURE);
+        return 1;
+    }
 
-//     // application starting point
-//     tokenizer tkzr = {0};
-//     tokenize(&tkzr, file);
-//     fclose(file);
+    read_to_buffer(file, &buffer);
+    tokenize_full_json(buffer); 
 
-//     int num = 20;
-//     void *ptr = num;
+    json_node *JSON = parse_json(buffer);
+    log_json(JSON,0);
 
-//     jval jvl1 = {.type = INT, .value = };
-//     char *word = "Timmy, Im very old!";
-//     char *w1 = (char *)calloc(strlen(word) + 1, sizeof(char));
-//     strcpy(w1, word);
 
-//     jval jvl2 = {
-//         .type = STRING,
-//         .value = w1};
-
-//     jdput(&JDICT, "age", jvl1);
-//     jdput(&JDICT, "name", jvl2);
-//     jdprint(&JDICT);
-// }
+}
