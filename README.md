@@ -10,6 +10,8 @@ Resources:
 [Writing a simple json parser](https://notes.eatonphil.com/writing-a-simple-json-parser.html)
 [Json Parser](https://www.computerenhance.com/p/initial-haversine-processor-code) - 15:00
 
+## Diss assemble
+`otool -tdv ./a.outi`
 
 ## Run Instructions
 1. to build and run:
@@ -31,5 +33,3 @@ example:
 - Should remove comments and white space
 - Should handle indefinite string length 
 - Returns an array of objects
-
-
