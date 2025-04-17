@@ -78,7 +78,6 @@ char *strv_get(str_vec vec)
 {
     if (vec.string == NULL)
     {
-        LOGERROR("vec is not initialized.");
         return NULL;
     }
 

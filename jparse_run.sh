@@ -2,4 +2,4 @@
 
 make clean && make
 echo ' '
-./bin/jparse ./sample.json 
+./bin/jparse ./singles/data_10000_flex.json

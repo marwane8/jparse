@@ -3,3 +3,5 @@
 *.o
 *.out
 sandbox.c
+*.f64
+data_100000*

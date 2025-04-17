@@ -226,13 +226,39 @@ json_node *parse_json(str_vec buffer)
     return root;
 }
 
+json_node *lookup_node(json_node *n, char *search_key)
+{
+    char *key;
+    key = strv_get(n->key);
+    if (key != NULL && 0 == strcmp(search_key, key))
+        return n;
+
+    json_node *child, *next;
+    if (n->json_child != NULL)
+    {
+
+        child = lookup_node(n->json_child, search_key);
+        if (child)
+            return child;
+    }
+    if (n->json_child != NULL)
+    {
+        next = lookup_node(n->json_next, search_key);
+        if (next)
+            return next;
+    }
+
+    return NULL;
+}
+
+void print_node(json_node *n)
+{
+    printf("(%s : %s)\n", n->key.string, n->value.string);
+}
+
 void log_json(json_node *n, u16 depth)
 {
-    char tabs[depth];
-    for (int i = 0; i < depth; i++)
-    {
-        tabs[i] = ' ';
-    }
+    char *tabs = " ";
     printf("%s(%s : %s)\n", tabs, n->key.string, n->value.string);
     if (n->json_child != NULL)
     {

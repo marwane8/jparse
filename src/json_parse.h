@@ -54,7 +54,9 @@ typedef struct _json_parser_
     u8 error_code;
 } json_parser;
 
+json_node *lookup_node(json_node *n, char *key);
 json_node *parse_json(str_vec buffer);
+void print_node(json_node *n);
 void log_json(json_node *n, u16 depth);
 
 // test functions

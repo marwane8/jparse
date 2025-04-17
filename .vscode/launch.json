@@ -7,7 +7,7 @@
       "MIMode": "lldb",
       "request": "launch",
       "program": "${workspaceFolder}/bin/jparse",
-      "args": ["./sample.json"],
+      "args": ["./singles/data_100_flex.json"],
       "cwd": "${workspaceFolder}",
       "stopAtEntry": true,
       "externalConsole": false,
