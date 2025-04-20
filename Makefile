@@ -9,7 +9,7 @@ BIN = bin
 OBJS = \
 	$(OBJ)/json_parse.o \
 	$(OBJ)/str_vector.o \
-	$(OBJ)/util.o
+	$(OBJ)/profile.o
 
 # Flags - include
 CFLAGS = -g -Wall -I $(OBJ)

@@ -17,9 +17,4 @@ typedef uint32_t u32; // 0 - 4,294,967,295
 typedef uint64_t u64; // 0 - 18,446,744,073,709,551,615
 typedef double f64;
 
-typedef clock_t utime;         // process timer - microseconds
-typedef struct timespec ntime; // wall clock timer - nanoseconds
-
-u64 time_diff(struct timespec t1, struct timespec t2);
-
 #endif // _UTIL_H_
