@@ -8,22 +8,13 @@
 #include "haversine.c"
 #include "profile.h"
 
-int read_to_buffer(FILE *fp, str_vec *buffer)
-{
-    char c;
-    while ((c = getc(fp)) != EOF)
-    {
-        strv_addc(buffer, c);
-    }
-    return 0;
-}
-
 int main(int argc, char *argv[])
 {
 
     init_profile();
 
-    FILE *file;
+    int read_id = start_count("read file");
+
     str_vec buffer;
     strv_init(&buffer);
 
@@ -34,23 +25,18 @@ int main(int argc, char *argv[])
     }
 
     char *filename = argv[1];
-    file = fopen(filename, "r");
-    if (file == NULL)
-    {
-        LOGERROR("file not found: %s", filename);
-        exit(EXIT_FAILURE);
-        return 1;
-    }
-    int read_id = start_count("read file");
-    read_to_buffer(file, &buffer);
+
+    strv_fmap(filename, &buffer);
     end_count(read_id);
 
+    int json_id = start_count("prs json");
     json_node *JSON = parse_json(buffer);
+    end_count(json_id);
 
+    int parse_id = start_count("prs array");
     int total = 100;
     f64 EARTH_R = 6372.8;
 
-    int parse_id = start_count("parse");
     haversine_pair *pairs = parse_haversine(JSON, total);
     end_count(parse_id);
 

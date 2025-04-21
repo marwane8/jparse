@@ -13,6 +13,7 @@ char *strv_addc(str_vec *vec, char ch);
 char *strv_get(str_vec vec);
 char strvi(str_vec vec, int i); // character at index ;
 int strv_free(str_vec *vec);
+int strv_fmap(char *fpath, str_vec *vec);
 void strv_log(str_vec vec);
 
 #endif // _STR_VEC_H_

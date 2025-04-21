@@ -8,7 +8,6 @@
 
 void init_profile()
 {
-    PROFILE_COUNT = 0;
     strncpy(COUNTER_ARRAY[0].label, "entry", COUNTER_NAME_MAX);
     COUNTER_ARRAY[0].time = 0;
     clock_gettime(CLOCK_MONOTONIC, &COUNTER_ARRAY[0].last_ref);
@@ -30,18 +29,19 @@ u64 time_diff(struct timespec t1, struct timespec t2)
 void print_counter()
 {
 
-    f64 elapsed = COUNTER_ARRAY[0].time;
+    u64 elapsed = COUNTER_ARRAY[0].time;
     u64 accumilator = 0;
-    printf("total time:     %.0f (%.3f sec)  \n\n", elapsed, (double)elapsed / NANO);
+
+    printf("%-10s time:    %-12llu (%-6.3f sec) \n\n", "elapsed", elapsed, (double)elapsed / NANO);
     for (int i = 1; i < PROFILE_COUNT; i++)
     {
         f64 percent = ((double)COUNTER_ARRAY[i].time / COUNTER_ARRAY[0].time) * 100;
-        printf("%s time:    %llu (%.5f %%) \n", COUNTER_ARRAY[i].label, COUNTER_ARRAY[i].time, percent);
+        printf("%-10s time:    %-12llu (%08.5f %%) \n", COUNTER_ARRAY[i].label, COUNTER_ARRAY[i].time, percent);
         accumilator = accumilator + COUNTER_ARRAY[i].time;
     }
 
     f64 percent = ((double)accumilator / COUNTER_ARRAY[0].time) * 100;
-    printf("\n\nfunction percent: (%.5f %%) \n", percent);
+    printf("\n  total percent:                 (%.5f %%) \n", percent);
 }
 
 void end_count(u16 count_id)

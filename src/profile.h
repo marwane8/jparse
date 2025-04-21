@@ -17,7 +17,7 @@ typedef struct _counter
 } counter;
 
 static counter COUNTER_ARRAY[COUNTER_BUFFER_MAX] = {};
-static u16 PROFILE_COUNT;
+static u16 PROFILE_COUNT = 0;
 
 void init_profile();
 void end_profile();

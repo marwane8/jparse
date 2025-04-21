@@ -1,6 +1,7 @@
 #include <time.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <stdio.h>
 
 long long time_diff(struct timespec t1, struct timespec t2)
 {
@@ -16,11 +17,11 @@ int main()
     clock_gettime(CLOCK_MONOTONIC, &tstart);
     tend = tstart;
 
-    while ((cock() - rstart) < CLOCKS_PER_SEC)
+    while ((clock() - rstart) < CLOCKS_PER_SEC)
         ;
     sleep(1);
     rend = clock();
     clock_gettime(CLOCK_MONOTONIC, &tend);
-    LOGINFO("timepsec time:  %llu", time_diff(tstart, tend));
-    LOGINFO("clock time:     %lu", (rend - rstart));
+    printf("timepsec time:  %llu\n", time_diff(tstart, tend));
+    printf("clock time:     %lu\n", (rend - rstart));
 }

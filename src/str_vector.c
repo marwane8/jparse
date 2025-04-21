@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+#include <sys/stat.h>
+#include <sys/mman.h>
+#include <fcntl.h>
+
 #include "str_vector.h"
 #include "util.h"
 
@@ -42,6 +47,30 @@ char *strv_add(str_vec *vec, char *string)
 
     strncat(vec->string, string, cat_len);
     return vec->string;
+}
+
+int strv_fmap(char *fpath, str_vec *vec)
+{
+
+    int fd = open(fpath, O_RDONLY);
+    if (fd < 0)
+    {
+        LOGERROR("file not found: %s", fpath);
+        return -1;
+    }
+
+    struct stat st;
+
+    if (fstat(fd, &st) == -1)
+    {
+        LOGERROR("unable to retrieve file size");
+        return -1;
+    }
+
+    char *mem_array = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+    vec->string = mem_array;
+    vec->size = st.st_size;
+    return 0;
 }
 
 char *strv_addc(str_vec *vec, char ch)
